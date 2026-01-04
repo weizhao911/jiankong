@@ -3,298 +3,754 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API 服务 - 数据处理平台</title>
+    <title>个人博客 | 分享知识与思考</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --gray-color: #6c757d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
-        
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+        }
+
         .container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
             width: 100%;
-            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 头部样式 */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            left: 0;
+            bottom: -5px;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #4a6491 100%);
+            color: white;
+            padding: 80px 0;
             text-align: center;
         }
-        
-        .logo {
-            width: 80px;
-            height: 80px;
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
             margin: 0 auto 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
+            opacity: 0.9;
         }
-        
-        h1 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .subtitle {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        
-        .status-box {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 6px;
-            text-align: left;
-        }
-        
-        .status-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #555;
-        }
-        
-        .status-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .status-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #10b981;
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 40px;
-            text-align: left;
-        }
-        
-        .feature-item {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-        }
-        
-        .feature-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-        
-        .feature-title {
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-        
-        .feature-desc {
-            color: #666;
-            font-size: 12px;
-        }
-        
-        .info-box {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            color: #1e40af;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-        
-        .info-box strong {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            border-radius: 6px;
-            border: none;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
+
+        .cta-button {
             display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 2px solid var(--secondary-color);
         }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+        .cta-button:hover {
+            background-color: transparent;
+            border-color: white;
+        }
+
+        /* 文章区域 */
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: var(--secondary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .post-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .post-card:hover .post-image img {
+            transform: scale(1.05);
+        }
+
+        .post-content {
+            padding: 25px;
+        }
+
+        .post-category {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+
+        .post-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .post-title a:hover {
+            color: var(--secondary-color);
+        }
+
+        .post-excerpt {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        /* 关于我区域 */
+        .about-section {
+            background-color: white;
+            padding: 60px 0;
+            margin-bottom: 60px;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-image {
+            flex: 0 0 250px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            margin-bottom: 60px;
+        }
+
+        .widget {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .widget-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            color: var(--primary-color);
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background-color: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background-color: var(--secondary-color);
             color: white;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+
+        .recent-post {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
-        
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-            border: 1px solid #ddd;
+
+        .recent-post:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
         }
-        
-        .btn-secondary:hover {
-            background: #e8e8e8;
+
+        .recent-post img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
         }
-        
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #999;
-            font-size: 12px;
+
+        .recent-post-content h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
-        
-        .footer a {
-            color: #667eea;
+
+        .recent-post-content a {
+            color: var(--primary-color);
             text-decoration: none;
         }
-        
-        .footer a:hover {
-            text-decoration: underline;
+
+        .recent-post-content a:hover {
+            color: var(--secondary-color);
         }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 40px 20px;
+
+        /* 页脚 */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-widget h3 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-widget h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary-color);
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-widget p {
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+                text-align: center;
             }
             
-            h1 {
-                font-size: 24px;
+            .about-image {
+                flex: 0 0 200px;
             }
-            
-            .features {
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-menu li {
+                margin: 15px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .blog-posts {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 头部 -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">个人<span>博客</span></a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#">技术文章</a></li>
+                <li><a href="#">生活随笔</a></li>
+                <li><a href="#">项目作品</a></li>
+                <li><a href="#">关于我</a></li>
+                <li><a href="#">联系</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>分享知识，记录成长</h1>
+            <p>这里是我的个人博客，主要分享技术文章、学习心得和生活感悟。希望通过记录和分享，与大家共同进步。</p>
+            <a href="#blog" class="cta-button">阅读最新文章</a>
+        </div>
+    </section>
+
+    <!-- 最新文章 -->
+    <section class="container" id="blog">
+        <div class="section-title">
+            <h2>最新文章</h2>
+        </div>
+        
+        <div class="blog-posts">
+            <!-- 文章1 -->
+            <article class="post-card">
+                <div class="post-image">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="编程">
+                </div>
+                <div class="post-content">
+                    <span class="post-category">技术</span>
+                    <h3 class="post-title"><a href="#">深入理解JavaScript闭包原理与应用</a></h3>
+                    <p class="post-excerpt">闭包是JavaScript中一个重要且强大的概念。本文将详细讲解闭包的工作原理、常见应用场景以及性能注意事项...</p>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2023年10月15日</span>
+                        <span><i class="far fa-eye"></i> 1.2K 浏览</span>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- 文章2 -->
+            <article class="post-card">
+                <div class="post-image">
+                    <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="网页设计">
+                </div>
+                <div class="post-content">
+                    <span class="post-category">设计</span>
+                    <h3 class="post-title"><a href="#">2023年网页设计趋势分析</a></h3>
+                    <p class="post-excerpt">随着技术的不断发展，网页设计也在不断演变。本文将探讨2023年最值得关注的网页设计趋势...</p>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2023年10月10日</span>
+                        <span><i class="far fa-eye"></i> 980 浏览</span>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- 文章3 -->
+            <article class="post-card">
+                <div class="post-image">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="学习">
+                </div>
+                <div class="post-content">
+                    <span class="post-category">学习</span>
+                    <h3 class="post-title"><a href="#">高效学习编程的方法与技巧</a></h3>
+                    <p class="post-excerpt">学习编程是一个持续的过程。本文将分享一些高效学习编程的方法和技巧，帮助初学者少走弯路...</p>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2023年10月5日</span>
+                        <span><i class="far fa-eye"></i> 1.5K 浏览</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="作者">
+                </div>
+                <div class="about-text">
+                    <h3>关于我</h3>
+                    <p>大家好，我是一名前端开发工程师，热爱技术与创作。从事Web开发已有5年经验，熟悉HTML、CSS、JavaScript、React等前端技术栈。</p>
+                    <p>这个博客是我记录学习、分享经验的地方。我相信分享是最好的学习方式，希望通过这个平台与更多开发者交流，共同进步。</p>
+                    <p>除了技术，我也喜欢摄影、读书和旅行。生活不止眼前的代码，还有诗和远方。</p>
+                    
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 侧边栏 -->
     <div class="container">
-        <div class="logo">🚀</div>
-        
-        <h1>API 服务平台</h1>
-        <p class="subtitle">高性能数据处理与监控服务</p>
-        
-        <div class="status-box">
-            <div class="status-item">
-                <div class="status-icon">✓</div>
-                <span><strong>服务状态：</strong>正常运行</span>
+        <div class="sidebar">
+            <div class="widget">
+                <h3 class="widget-title">文章分类</h3>
+                <div class="tag-cloud">
+                    <a href="#" class="tag">JavaScript</a>
+                    <a href="#" class="tag">CSS</a>
+                    <a href="#" class="tag">HTML</a>
+                    <a href="#" class="tag">React</a>
+                    <a href="#" class="tag">Vue</a>
+                    <a href="#" class="tag">Node.js</a>
+                    <a href="#" class="tag">设计</a>
+                    <a href="#" class="tag">学习心得</a>
+                    <a href="#" class="tag">生活随笔</a>
+                </div>
             </div>
-            <div class="status-item">
-                <div class="status-icon">✓</div>
-                <span><strong>API 版本：</strong>v1.0</span>
+            
+            <div class="widget">
+                <h3 class="widget-title">最近文章</h3>
+                <div class="recent-post">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="文章">
+                    <div class="recent-post-content">
+                        <h4><a href="#">如何优化网站性能</a></h4>
+                        <span>2023年9月28日</span>
+                    </div>
+                </div>
+                <div class="recent-post">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="文章">
+                    <div class="recent-post-content">
+                        <h4><a href="#">响应式设计的最佳实践</a></h4>
+                        <span>2023年9月20日</span>
+                    </div>
+                </div>
+                <div class="recent-post">
+                    <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="文章">
+                    <div class="recent-post-content">
+                        <h4><a href="#">CSS Grid布局完全指南</a></h4>
+                        <span>2023年9月15日</span>
+                    </div>
+                </div>
             </div>
-            <div class="status-item">
-                <div class="status-icon">✓</div>
-                <span><strong>响应时间：</strong>&lt; 100ms</span>
-            </div>
-        </div>
-        
-        <div class="features">
-            <div class="feature-item">
-                <div class="feature-icon">📊</div>
-                <div class="feature-title">实时监控</div>
-                <div class="feature-desc">全天候系统监控</div>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon">🔒</div>
-                <div class="feature-title">安全加密</div>
-                <div class="feature-desc">企业级数据保护</div>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-title">高性能</div>
-                <div class="feature-desc">毫秒级响应</div>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon">🌐</div>
-                <div class="feature-title">全球部署</div>
-                <div class="feature-desc">多地域支持</div>
-            </div>
-        </div>
-        
-        <div class="info-box">
-            <strong>📌 重要提示</strong>
-            这是一个 API 服务端点。如需访问管理面板，请使用授权的域名进行访问。所有请求需要有效的 API 密钥。
-        </div>
-        
-        <div class="button-group">
-            <button class="btn btn-primary" onclick="showAlert()">查看文档</button>
-            <button class="btn btn-secondary" onclick="checkStatus()">检查状态</button>
-        </div>
-        
-        <div class="footer">
-            <p>© 2024 API 服务平台 | <a href="#">隐私政策</a> | <a href="#">服务条款</a></p>
-            <p style="margin-top: 8px;">Powered by Hugging Face</p>
         </div>
     </div>
-    
-    <script>
-        function showAlert() {
-            alert('API 文档已发送至您的邮箱。\n\n如需获取完整文档，请联系技术支持。');
-        }
-        
-        function checkStatus() {
-            const status = {
-                'API 服务': '✓ 正常',
-                '数据库': '✓ 正常',
-                '缓存服务': '✓ 正常',
-                '消息队列': '✓ 正常'
-            };
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-widget">
+                    <h3>关于博客</h3>
+                    <p>这是我的个人博客，记录我在技术、学习和生活中的点滴。希望通过分享和交流，与大家共同成长。</p>
+                </div>
+                
+                <div class="footer-widget">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">技术文章</a></li>
+                        <li><a href="#">生活随笔</a></li>
+                        <li><a href="#">项目作品</a></li>
+                        <li><a href="#">关于我</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-widget">
+                    <h3>联系我</h3>
+                    <p>欢迎通过以下方式联系我：</p>
+                    <p>邮箱：contact@example.com</p>
+                    <p>GitHub：github.com/username</p>
+                </div>
+            </div>
             
-            let message = '系统状态检查结果：\n\n';
-            for (let key in status) {
-                message += key + ': ' + status[key] + '\n';
-            }
-            alert(message);
-        }
+            <div class="copyright">
+                <p>&copy; 2023 个人博客. 保留所有权利. 设计 by 博主</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
         
-        // 防止直接访问敏感路径
-        console.log('API Service Platform v1.0');
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            
+            // 切换菜单图标
+            const icon = mobileMenuBtn.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单
+                    if(window.innerWidth <= 768) {
+                        navMenu.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                }
+            });
+        });
+        
+        // 文章卡片悬停效果增强
+        const postCards = document.querySelectorAll('.post-card');
+        postCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
     </script>
 </body>
 </html>
